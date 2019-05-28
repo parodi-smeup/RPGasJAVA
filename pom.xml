@@ -5,6 +5,10 @@
 	<groupId>com.smeup</groupId>
 	<artifactId>RPGasJAVA</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+		<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
 	<distributionManagement>
 		<repository>
 			<id>releases</id>
@@ -35,11 +39,7 @@
 			<artifactId>examples</artifactId>
 			<version>5e70fcd</version>
 		</dependency>
-		<dependency>
-			<groupId>com.google.http-client</groupId>
-			<artifactId>google-http-client</artifactId>
-			<version>1.23.0</version>
-		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
 			<groupId>junit</groupId>
