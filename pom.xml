@@ -2,10 +2,23 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>HTTPClient-JDURL</groupId>
-	<artifactId>HTTPClient-JDURL</artifactId>
+	<groupId>com.smeup</groupId>
+	<artifactId>RPGasJAVA</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-		<repositories>
+	<distributionManagement>
+		<repository>
+			<id>releases</id>
+			<name>Internal Releases</name>
+			<url>http://mauer.smeup.com/nexus/content/repositories/releases</url>
+		</repository>
+
+		<snapshotRepository>
+			<id>snapshots</id>
+			<name>Internal Snapshots</name>
+			<url>http://mauer.smeup.com/nexus/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+	<repositories>
 		<repository>
 			<id>jitpack.io</id>
 			<url>https://jitpack.io</url>
@@ -41,9 +54,22 @@
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.0</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+					</execution>
+				</executions>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<finalName>RPGasJAVA</finalName>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<appendAssemblyId>false</appendAssemblyId>
+					<archive>
+						<manifest>
+							<mainClass>com.smeup.jd.Jdurl</mainClass>
+						</manifest>
+					</archive>
 				</configuration>
 			</plugin>
 		</plugins>
