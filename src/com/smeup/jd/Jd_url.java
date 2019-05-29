@@ -15,11 +15,11 @@ import com.smeup.rpgparser.interpreter.ProgramParam;
 import com.smeup.rpgparser.interpreter.SystemInterface;
 import com.smeup.rpgparser.interpreter.Value;
 
-public class Jdurl implements Program {
+public class Jd_url implements Program {
 
 	public static void main(String[] args) {
-		Jdurl jdurl = new Jdurl();
-		String rawResponse = jdurl.urlCall("https://jsonplaceholder.typicode.com/posts/42");
+		Jd_url jd_url = new Jd_url();
+		String rawResponse = jd_url.urlCall("https://jsonplaceholder.typicode.com/posts/42");
 		System.out.println(rawResponse);
 	}
 
