@@ -10,8 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-
-import com.smeup.rpgparser.interpreter.*;
+import com.smeup.rpgparser.interpreter.ArrayType;
+import com.smeup.rpgparser.interpreter.Program;
+import com.smeup.rpgparser.interpreter.ProgramParam;
+import com.smeup.rpgparser.interpreter.StringType;
+import com.smeup.rpgparser.interpreter.SystemInterface;
+import com.smeup.rpgparser.interpreter.Type;
+import com.smeup.rpgparser.interpreter.Value;
 
 public class Jd_url implements Program {
 
@@ -23,7 +28,7 @@ public class Jd_url implements Program {
 
 	private List<ProgramParam> parms;
 
-	public Jd_url()	{
+	public Jd_url() {
 //	     D $$SVAR                      1050    DIM(200)
 //	     D  $$SVARCD                     50    OVERLAY($$SVAR:1)                    Name
 //	     D  $$SVARVA                   1000    OVERLAY($$SVAR:*NEXT)                Value		
@@ -40,7 +45,7 @@ public class Jd_url implements Program {
 		parms.add(new ProgramParam("U$METO", new StringType(10)));
 		parms.add(new ProgramParam("U$SVARSK", new ArrayType(new StringType(1050), 200)));
 	}
-	
+
 	public String urlCall(final String urlToCall) {
 		URL url;
 		String responseAsString = "";
@@ -69,11 +74,28 @@ public class Jd_url implements Program {
 
 	@Override
 	public List<Value> execute(SystemInterface arg0, Map<String, ? extends Value> arg1) {
+
 		System.out.println("RPG as a Java program");
+
+		ArrayList<Value> arrayListResponse = new ArrayList<Value>();
+
 		for (Map.Entry<String, ? extends Value> entry : arg1.entrySet()) {
+
 			System.out.println("Name: " + entry.getKey() + " - Value: " + entry.getValue());
+
+			if ("U$SVARSK".equals(entry.getKey().toString())) {
+				String svar = entry.getValue().toString();
+				System.out.println("Executing urlCall(" + svar.trim() + ") ...");
+				String response = urlCall(svar.trim());
+				
+				
+				System.out.println("...done.");
+			}
+
+			arrayListResponse.add(entry.getValue());
+
 		}
-		return new ArrayList<Value>();
+		return arrayListResponse;
 	}
 
 	@Override
