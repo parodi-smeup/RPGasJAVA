@@ -14,8 +14,8 @@ import com.smeup.rpgparser.interpreter.ArrayType;
 import com.smeup.rpgparser.interpreter.Program;
 import com.smeup.rpgparser.interpreter.ProgramParam;
 import com.smeup.rpgparser.interpreter.StringType;
+import com.smeup.rpgparser.interpreter.StringValue;
 import com.smeup.rpgparser.interpreter.SystemInterface;
-import com.smeup.rpgparser.interpreter.Type;
 import com.smeup.rpgparser.interpreter.Value;
 
 public class Jd_url implements Program {
@@ -87,8 +87,9 @@ public class Jd_url implements Program {
 				String svar = entry.getValue().toString();
 				System.out.println("Executing urlCall(" + svar.trim() + ") ...");
 				String response = urlCall(svar.trim());
-				
-				
+
+			    arrayListResponse.add(new StringValue(response));
+
 				System.out.println("...done.");
 			}
 
