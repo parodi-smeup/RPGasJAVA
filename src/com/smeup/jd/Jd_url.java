@@ -84,9 +84,9 @@ public class Jd_url implements Program {
 			System.out.println("Name: " + entry.getKey() + " - Value: " + entry.getValue());
 
 			if ("U$SVARSK".equals(entry.getKey().toString())) {
-				String svar = entry.getValue().toString();
-				System.out.println("Executing urlCall(" + svar.trim() + ") ...");
-				String response = urlCall(svar.trim());
+				
+				System.out.println("Executing urlCall(" + entry.getValue().asString().getValue() + ") ...");
+				String response = urlCall("" + entry.getValue().asString().getValue());
 
 			    arrayListResponse.add(new StringValue(response));
 
