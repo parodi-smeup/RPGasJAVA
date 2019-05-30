@@ -64,11 +64,11 @@ public class Jd_url implements Program {
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			responseAsString = "*ERROR" + e.getStackTrace();
+			responseAsString = "*ERROR" + e.getMessage();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			responseAsString = "*ERROR" + e.getStackTrace();
+			responseAsString = "*ERROR" + e.getMessage();
 		}
 		return responseAsString;
 
