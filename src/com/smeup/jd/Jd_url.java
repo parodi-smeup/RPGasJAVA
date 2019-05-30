@@ -74,19 +74,12 @@ public class Jd_url implements Program {
 
 	@Override
 	public List<Value> execute(SystemInterface arg0, Map<String, ? extends Value> arg1) {
-		System.out.println("Jd_url execute() has been invoked with parms:");
 		
 		ArrayList<Value> arrayListResponse = new ArrayList<Value>();
 		for (Map.Entry<String, ? extends Value> entry : arg1.entrySet()) {
-
-			System.out.println("  Name: " + entry.getKey() + " - Value: " + entry.getValue());
-
 			if ("U$SVARSK".equals(entry.getKey().toString())) {
-				System.out.println("Invoking urlCall(" + entry.getValue().asString().getValue() + ") ...");
 				String response = urlCall(entry.getValue().asString().getValue());
-			    arrayListResponse.add(new StringValue(response));
-			    System.out.println("  Response: " + response);
-				System.out.println("...done.");
+			    arrayListResponse.add(new StringValue(response.trim()));
 			}else {
 				arrayListResponse.add(entry.getValue());
 			}
