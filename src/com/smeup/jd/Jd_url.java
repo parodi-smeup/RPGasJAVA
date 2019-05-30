@@ -10,13 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.smeup.rpgparser.interpreter.ArrayType;
-import com.smeup.rpgparser.interpreter.Program;
-import com.smeup.rpgparser.interpreter.ProgramParam;
-import com.smeup.rpgparser.interpreter.StringType;
-import com.smeup.rpgparser.interpreter.SystemInterface;
-import com.smeup.rpgparser.interpreter.Type;
-import com.smeup.rpgparser.interpreter.Value;
+import com.smeup.rpgparser.interpreter.*;
 
 public class Jd_url implements Program {
 
@@ -61,6 +55,7 @@ public class Jd_url implements Program {
 			}
 			in.close();
 			responseAsString = content.toString();
+			System.out.println("Response: " + responseAsString);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -84,15 +79,16 @@ public class Jd_url implements Program {
 			System.out.println("Name: " + entry.getKey() + " - Value: " + entry.getValue());
 
 			if ("U$SVARSK".equals(entry.getKey().toString())) {
-				String svar = entry.getValue().toString();
+				String svar = entry.getValue().asString().getValue();
 				System.out.println("Executing urlCall(" + svar.trim() + ") ...");
 				String response = urlCall(svar.trim());
 				
+				arrayListResponse.add(new StringValue(response));
 				
 				System.out.println("...done.");
+			} else {
+				arrayListResponse.add(entry.getValue());
 			}
-
-			arrayListResponse.add(entry.getValue());
 
 		}
 		return arrayListResponse;
