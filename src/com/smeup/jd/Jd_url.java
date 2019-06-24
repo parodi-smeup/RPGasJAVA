@@ -20,26 +20,9 @@ import com.smeup.rpgparser.interpreter.Value;
 
 public class Jd_url implements Program {
 
-	public static void main(String[] args) {
-		Jd_url jd_url = new Jd_url();
-		String rawResponse = jd_url.urlCall("https://jsonplaceholder.typicode.com/posts/42");
-		System.out.println(rawResponse);
-	}
-
 	private List<ProgramParam> parms;
 
 	public Jd_url() {
-//	     D $$SVAR                      1050    DIM(200)
-//	     D  $$SVARCD                     50    OVERLAY($$SVAR:1)                    Name
-//	     D  $$SVARVA                   1000    OVERLAY($$SVAR:*NEXT)                Value		
-//	     D U$FUNZ          S             10
-//	      * . Method
-//	     D U$METO          S             10
-//	      * . Array of Variables
-//	     D U$SVARSK        S                   LIKE($$SVAR) DIM(%ELEM($$SVAR))
-//	     C                   PARM                    U$FUNZ
-//	     C                   PARM                    U$METO
-//	     C                   PARM                    U$SVARSK
 		parms = new ArrayList<ProgramParam>();
 		parms.add(new ProgramParam("U$FUNZ", new StringType(10)));
 		parms.add(new ProgramParam("U$METO", new StringType(10)));
@@ -64,11 +47,11 @@ public class Jd_url implements Program {
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			responseAsString = "*ERROR" + e.getMessage();
+			responseAsString = "*ERROR " + e.getMessage();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			responseAsString = "*ERROR" + e.getMessage();
+			responseAsString = "*ERROR " + e.getMessage();
 		}
 		return responseAsString;
 
@@ -76,13 +59,12 @@ public class Jd_url implements Program {
 
 	@Override
 	public List<Value> execute(SystemInterface arg0, Map<String, ? extends Value> arg1) {
-		
 		ArrayList<Value> arrayListResponse = new ArrayList<Value>();
 		for (Map.Entry<String, ? extends Value> entry : arg1.entrySet()) {
 			if ("U$SVARSK".equals(entry.getKey().toString())) {
 				String response = urlCall(entry.getValue().asString().getValue());
-			    arrayListResponse.add(new StringValue(response.trim()));
-			}else {
+				arrayListResponse.add(new StringValue(response.trim()));
+			} else {
 				arrayListResponse.add(entry.getValue());
 			}
 		}

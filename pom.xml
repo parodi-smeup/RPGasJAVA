@@ -5,7 +5,7 @@
 	<groupId>com.smeup</groupId>
 	<artifactId>RPGasJAVA</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-		<properties>
+	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -16,7 +16,6 @@
 			<name>Internal Releases</name>
 			<url>http://mauer.smeup.com/nexus/content/repositories/releases</url>
 		</repository>
-
 		<snapshotRepository>
 			<id>snapshots</id>
 			<name>Internal Snapshots</name>
@@ -34,17 +33,21 @@
 			<artifactId>examples</artifactId>
 			<version>master-SNAPSHOT</version>
 		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.13-beta-3</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.5</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
+		<testSourceDirectory>test</testSourceDirectory>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
