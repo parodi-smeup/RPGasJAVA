@@ -1,45 +1,78 @@
 package com.smeup.jd;
 
-import static org.junit.Assert.assertTrue;
-
-import java.io.File;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
-public class Jd_rcvsck_test {
+import com.smeup.rpgparser.interpreter.StringValue;
+import com.smeup.rpgparser.interpreter.Value;
+import com.smeup.rpgparser.jvminterop.JavaSystemInterface;
+
+public class Jd_rcvsck_test extends Thread {
 
 	private final String address = "localhost";
 	private final String port = "8888";
+	private ByteArrayOutputStream byteArrayOutputStream;
+	private PrintStream printStream;
+	private JavaSystemInterface javaSystemInterface;
+	private Jd_rcvsck JdProgram;
+	private Map<String, Value> jdProgramRequestParms;
+	private List<Value> jdProgramResponseParms;
 
 	@Test
-	public void test_001() throws IOException {
+	public void test_001() throws IOException, InterruptedException {
 
-		// start to listen
-		Jd_rcvsck_thread jd_rcvsck_thread = new Jd_rcvsck_thread();
-		jd_rcvsck_thread.start();
+		Thread jd_rcvsck_test = new Jd_rcvsck_test();
+		jd_rcvsck_test.start();
 
-		// write to socket
-		final String expectedFromSocket = "Some data to socket to program Jd_rcvsck";
+		Thread.sleep(3000);
+		
+		final String expectedFromSocket = "some socket data";
 		writeToSocket(expectedFromSocket);
-
-		File temp = File.createTempFile("Jd_rcvsck_thread", ".tmp");
-        if (temp.exists() && temp.canWrite()) { 
-        	
-        }
-		// read from temp file written by jd_rcvsck with socket content
-		final String fromSocket = FileUtils.readFileToString(temp, "UTF-8");
-
-		assertTrue(fromSocket.equals(expectedFromSocket));
+		System.out.println("Done");
 
 	}
 
+	@Override
+	public void run() {
+
+		byteArrayOutputStream = new ByteArrayOutputStream();
+		printStream = new PrintStream(byteArrayOutputStream);
+		javaSystemInterface = new JavaSystemInterface(printStream);
+		JdProgram = new Jd_rcvsck();
+
+		jdProgramRequestParms = new LinkedHashMap<>();
+		jdProgramRequestParms.put("ADDRSK", new StringValue(port));
+		jdProgramRequestParms.put("BUFFER", new StringValue(""));
+		jdProgramRequestParms.put("BUFLEN", new StringValue("100"));
+		jdProgramRequestParms.put("IERROR", new StringValue(""));
+
+		jdProgramResponseParms = JdProgram.execute(javaSystemInterface, jdProgramRequestParms);
+		
+		String contentFromSocket = "";
+//		for (Value value : jdProgramResponseParms) {
+//			System.out.println("Values:");
+//			System.out.println(value);
+//			if ("BUFFER".equals(value.asString().getValue())) {
+//				contentFromSocket = value.asString().getValue();
+//				break;
+//			}
+//		}
+
+		System.out.println("Content readed from socket: " + contentFromSocket);
+	}
+
 	private String writeToSocket(final String message) {
+
 		try (Socket socket = new Socket(address, Integer.valueOf(port))) {
 			OutputStream output = socket.getOutputStream();
 			PrintWriter writer = new PrintWriter(output, true);

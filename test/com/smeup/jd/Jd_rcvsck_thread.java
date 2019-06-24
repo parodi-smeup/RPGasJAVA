@@ -1,10 +1,6 @@
 package com.smeup.jd;
 
-import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +29,7 @@ public class Jd_rcvsck_thread extends Thread {
 		JdProgram = new Jd_rcvsck();
 		JdProgramRequestParms = new HashMap<>();
 
-		final String expectedFromSocket = "Some data by socket to program Jd_rcvsck";
+		final String expectedFromSocket = "some socket data";
 		JdProgramRequestParms.put("ADDRSK", new StringValue(port));
 		JdProgramRequestParms.put("BUFFER", new StringValue(expectedFromSocket));
 		JdProgramRequestParms.put("BUFLEN", new StringValue("100"));
@@ -41,16 +37,7 @@ public class Jd_rcvsck_thread extends Thread {
 
 		JdProgramResponseParms = JdProgram.execute(javaSystemInterface, JdProgramRequestParms);
 		String contentFromSocket = JdProgramResponseParms.get(1).asString().getValue();
-
-		// create a temp file containing content from socket
-		try {
-			File temp = File.createTempFile("Jd_rcvsck_thread", ".tmp");
-			BufferedWriter bw = new BufferedWriter(new FileWriter(temp));
-			bw.write(contentFromSocket);
-			bw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		System.out.println("Content readed from socket: " + contentFromSocket);
 	}
 
 }

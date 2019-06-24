@@ -34,18 +34,18 @@ public class Jd_rcvsck implements Program {
 		parms.add(new ProgramParam("IERROR", new StringType(1)));
 	}
 
-	public String listenSocket(final int port) {
+	private String listenSocket(final int port) {
 		String responseAsString = "";
 		try (ServerSocket serverSocket = new ServerSocket(port)) {
-			while (true) {
-				Socket socket = serverSocket.accept();
-				System.out.println("Client connected");
-				InputStream input = socket.getInputStream();
-				BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-				responseAsString = reader.readLine();
-				socket.close();
-				break;
-			}
+			System.out.println("Socket listening on port " + port);
+			Socket socket = serverSocket.accept();
+			System.out.println("Client connected");
+			InputStream input = socket.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+			responseAsString = reader.readLine();
+			System.out.println("Client wrote: " + responseAsString);
+			socket.close();
+			System.out.println("Socket closed");
 		} catch (IOException e) {
 			e.printStackTrace();
 			responseAsString = "*ERROR " + e.getMessage();
