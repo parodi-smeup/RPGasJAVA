@@ -62,13 +62,28 @@ public class Jd_rcvsck implements Program {
 	@Override
 	public List<Value> execute(SystemInterface arg0, LinkedHashMap<String, Value> arg1) {
 		ArrayList<Value> arrayListResponse = new ArrayList<Value>();
+		
+		String response = "";
+		
 		for (Map.Entry<String, ? extends Value> entry : arg1.entrySet()) {
-			if ("ADDRSK".equals(entry.getKey().toString())) {
+			
+			String parmName = entry.getKey().toString();
+			
+			switch(parmName) {
+			case "ADDRSK":
 				final int port = Integer.valueOf(entry.getValue().asString().getValue());
-				String response = listenSocket(port);
-				arrayListResponse.add(new StringValue(response.trim()));
-			} else {
+				response = listenSocket(port);
 				arrayListResponse.add(entry.getValue());
+				break;
+			case "BUFFER":
+				arrayListResponse.add(new StringValue(response.trim()));
+				break;
+			case "BUFLEN":
+				arrayListResponse.add(entry.getValue());
+				break;
+			case "IERROR":
+				arrayListResponse.add(entry.getValue());
+				break;
 			}
 		}
 		return arrayListResponse;

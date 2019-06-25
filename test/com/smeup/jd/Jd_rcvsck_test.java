@@ -28,25 +28,20 @@ public class Jd_rcvsck_test extends Thread {
 	private Jd_rcvsck JdProgram;
 	private LinkedHashMap<String, Value> jdProgramRequestParms;
 	private List<Value> jdProgramResponseParms;
-	private final String writtenToSocket = "SOME DATA ON SOCKET";
-	private String readFromSocket = "";
+	private String dataToSocket = "SOME DATA ON SOCKET";
 
 	@Test
 	public void test_001() throws IOException, InterruptedException {
-
 		Thread jd_rcvsck_test = new Jd_rcvsck_test();
 		jd_rcvsck_test.start();
 
 		Thread.sleep(3000);
 
-		writeToSocket(writtenToSocket);
-
-		assertEquals(readFromSocket, writtenToSocket);
+		writeToSocket(dataToSocket);
 	}
 
 	@Override
 	public void run() {
-
 		byteArrayOutputStream = new ByteArrayOutputStream();
 		printStream = new PrintStream(byteArrayOutputStream);
 		javaSystemInterface = new JavaSystemInterface(printStream);
@@ -57,20 +52,15 @@ public class Jd_rcvsck_test extends Thread {
 		jdProgramRequestParms.put("BUFFER", new StringValue(""));
 		jdProgramRequestParms.put("BUFLEN", new StringValue("100"));
 		jdProgramRequestParms.put("IERROR", new StringValue(""));
-
 		jdProgramResponseParms = JdProgram.execute(javaSystemInterface, jdProgramRequestParms);
 
-		// TODO get ONLY BUFFER parm, NOT ALL parms
-		readFromSocket = "\n parm0=" + jdProgramResponseParms.get(0).asString().getValue() +
-				"\n parm1=" + jdProgramResponseParms.get(1).asString().getValue() +
-				"\n parm2=" +jdProgramResponseParms.get(2).asString().getValue() +
-				"\n parm3=" +jdProgramResponseParms.get(3).asString().getValue();
-
+		final String readFromSocket = jdProgramResponseParms.get(1).asString().getValue();
 		System.out.println("Content readed from socket: " + readFromSocket);
+		
+		assertEquals(dataToSocket, readFromSocket);
 	}
 
 	private String writeToSocket(final String message) {
-
 		try (Socket socket = new Socket(address, Integer.valueOf(port))) {
 			OutputStream output = socket.getOutputStream();
 			PrintWriter writer = new PrintWriter(output, true);
