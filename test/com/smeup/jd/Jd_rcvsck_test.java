@@ -48,10 +48,12 @@ public class Jd_rcvsck_test {
 				JdProgram = new Jd_rcvsck();
 
 				jdProgramRequestParms = new LinkedHashMap<>();
+				
 				jdProgramRequestParms.put("ADDRSK", new StringValue(port));
 				jdProgramRequestParms.put("BUFFER", new StringValue(""));
 				jdProgramRequestParms.put("BUFLEN", new StringValue("100"));
-				jdProgramRequestParms.put("IERROR", new StringValue(""));
+				jdProgramRequestParms.put("IERROR",  new StringValue(""));		
+				
 				jdProgramResponseParms = JdProgram.execute(javaSystemInterface, jdProgramRequestParms);
 
 				readFromSocket = jdProgramResponseParms.get(1).asString().getValue();
