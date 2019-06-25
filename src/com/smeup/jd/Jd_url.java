@@ -7,6 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -58,7 +59,7 @@ public class Jd_url implements Program {
 	}
 
 	@Override
-	public List<Value> execute(SystemInterface arg0, Map<String, ? extends Value> arg1) {
+	public List<Value> execute(SystemInterface arg0, LinkedHashMap<String, Value> arg1) {
 		ArrayList<Value> arrayListResponse = new ArrayList<Value>();
 		for (Map.Entry<String, ? extends Value> entry : arg1.entrySet()) {
 			if ("U$SVARSK".equals(entry.getKey().toString())) {

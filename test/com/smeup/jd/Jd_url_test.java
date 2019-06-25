@@ -4,9 +4,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +20,7 @@ public class Jd_url_test {
 	private PrintStream printStream;
 	private JavaSystemInterface javaSystemInterface;
 	private Jd_url JdProgram;
-	private Map<String, Value> JdProgramRequestParms;
+	private LinkedHashMap<String, Value> JdProgramRequestParms;
 	private List<Value> JdProgramResponseParms;
 
 	@Test
@@ -66,7 +65,7 @@ public class Jd_url_test {
 		printStream = new PrintStream(byteArrayOutputStream);
 		javaSystemInterface = new JavaSystemInterface(printStream);
 		JdProgram = new Jd_url();
-		JdProgramRequestParms = new HashMap<>();
+		JdProgramRequestParms = new LinkedHashMap<String, Value>();
 	}
 
 }

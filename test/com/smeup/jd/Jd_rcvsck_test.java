@@ -1,5 +1,7 @@
 package com.smeup.jd;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -9,7 +11,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.Test;
 
@@ -25,8 +26,10 @@ public class Jd_rcvsck_test extends Thread {
 	private PrintStream printStream;
 	private JavaSystemInterface javaSystemInterface;
 	private Jd_rcvsck JdProgram;
-	private Map<String, Value> jdProgramRequestParms;
+	private LinkedHashMap<String, Value> jdProgramRequestParms;
 	private List<Value> jdProgramResponseParms;
+	private final String writtenToSocket = "SOME DATA ON SOCKET";
+	private String readFromSocket = "";
 
 	@Test
 	public void test_001() throws IOException, InterruptedException {
@@ -35,11 +38,10 @@ public class Jd_rcvsck_test extends Thread {
 		jd_rcvsck_test.start();
 
 		Thread.sleep(3000);
-		
-		final String expectedFromSocket = "some socket data";
-		writeToSocket(expectedFromSocket);
-		System.out.println("Done");
 
+		writeToSocket(writtenToSocket);
+
+		assertEquals(readFromSocket, writtenToSocket);
 	}
 
 	@Override
@@ -57,18 +59,14 @@ public class Jd_rcvsck_test extends Thread {
 		jdProgramRequestParms.put("IERROR", new StringValue(""));
 
 		jdProgramResponseParms = JdProgram.execute(javaSystemInterface, jdProgramRequestParms);
-		
-		String contentFromSocket = "";
-//		for (Value value : jdProgramResponseParms) {
-//			System.out.println("Values:");
-//			System.out.println(value);
-//			if ("BUFFER".equals(value.asString().getValue())) {
-//				contentFromSocket = value.asString().getValue();
-//				break;
-//			}
-//		}
 
-		System.out.println("Content readed from socket: " + contentFromSocket);
+		// TODO get ONLY BUFFER parm, NOT ALL parms
+		readFromSocket = "\n parm0=" + jdProgramResponseParms.get(0).asString().getValue() +
+				"\n parm1=" + jdProgramResponseParms.get(1).asString().getValue() +
+				"\n parm2=" +jdProgramResponseParms.get(2).asString().getValue() +
+				"\n parm3=" +jdProgramResponseParms.get(3).asString().getValue();
+
+		System.out.println("Content readed from socket: " + readFromSocket);
 	}
 
 	private String writeToSocket(final String message) {

@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,13 +38,13 @@ public class Jd_rcvsck implements Program {
 	private String listenSocket(final int port) {
 		String responseAsString = "";
 		try (ServerSocket serverSocket = new ServerSocket(port)) {
-			System.out.println("Socket listening on port " + port);
+			System.out.println("Socket listening on port " + port + "...");
 			Socket socket = serverSocket.accept();
 			System.out.println("Client connected");
 			InputStream input = socket.getInputStream();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(input));
 			responseAsString = reader.readLine();
-			System.out.println("Client wrote: " + responseAsString);
+			System.out.println("Client content written: " + responseAsString);
 			socket.close();
 			System.out.println("Socket closed");
 		} catch (IOException e) {
@@ -54,7 +55,12 @@ public class Jd_rcvsck implements Program {
 	}
 
 	@Override
-	public List<Value> execute(SystemInterface arg0, Map<String, ? extends Value> arg1) {
+	public List<ProgramParam> params() {
+		return parms;
+	}
+
+	@Override
+	public List<Value> execute(SystemInterface arg0, LinkedHashMap<String, Value> arg1) {
 		ArrayList<Value> arrayListResponse = new ArrayList<Value>();
 		for (Map.Entry<String, ? extends Value> entry : arg1.entrySet()) {
 			if ("ADDRSK".equals(entry.getKey().toString())) {
@@ -66,11 +72,6 @@ public class Jd_rcvsck implements Program {
 			}
 		}
 		return arrayListResponse;
-	}
-
-	@Override
-	public List<ProgramParam> params() {
-		return parms;
 	}
 
 }
