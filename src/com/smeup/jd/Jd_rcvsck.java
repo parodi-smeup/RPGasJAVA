@@ -22,6 +22,7 @@ import com.smeup.rpgparser.interpreter.Value;
 public class Jd_rcvsck implements Program {
 
 	private List<ProgramParam> parms;
+	private String iError;
 
 	public Jd_rcvsck() {
 		parms = new ArrayList<ProgramParam>();
@@ -50,6 +51,7 @@ public class Jd_rcvsck implements Program {
 		} catch (IOException e) {
 			e.printStackTrace();
 			responseAsString = "*ERROR " + e.getMessage();
+			iError = "1";
 		}
 		return responseAsString;
 	}
@@ -64,6 +66,8 @@ public class Jd_rcvsck implements Program {
 		ArrayList<Value> arrayListResponse = new ArrayList<Value>();
 		
 		String response = "";
+		int bufferLength = 0;
+		iError = "";
 		
 		for (Map.Entry<String, ? extends Value> entry : arg1.entrySet()) {
 			
@@ -73,16 +77,17 @@ public class Jd_rcvsck implements Program {
 			case "ADDRSK":
 				final int port = Integer.valueOf(entry.getValue().asString().getValue());
 				response = listenSocket(port);
+				bufferLength = response.trim().length();
 				arrayListResponse.add(entry.getValue());
 				break;
 			case "BUFFER":
 				arrayListResponse.add(new StringValue(response.trim()));
 				break;
 			case "BUFLEN":
-				arrayListResponse.add(entry.getValue());
+				arrayListResponse.add(new StringValue(String.valueOf(bufferLength)));
 				break;
 			case "IERROR":
-				arrayListResponse.add(entry.getValue());
+				arrayListResponse.add(new StringValue(iError));
 				break;
 			}
 		}
