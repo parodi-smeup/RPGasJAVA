@@ -75,7 +75,8 @@ public class Jd_rcvsck implements Program {
 			
 			switch(parmName) {
 			case "ADDRSK":
-				final int port = Integer.valueOf(entry.getValue().asString().getValue());
+				String p = entry.getValue().asString().getValue();
+				int port = Integer.parseInt(p.trim());
 				response = listenSocket(port);
 				bufferLength = response.trim().length();
 				arrayListResponse.add(entry.getValue());

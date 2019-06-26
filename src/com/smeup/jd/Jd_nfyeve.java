@@ -29,7 +29,6 @@ import Smeup.smeui.iotspi.interaction.SPIIoTEvent;
 public class Jd_nfyeve extends SPIIoTConnectorAdapter implements Program, DataDocumentListenerInterface {
 
 	private List<ProgramParam> parms;
-	private EventComponent eventComponent;
 	private Map<String, EventComponent> eventList = new HashMap<>();
 	private String a37SubId;
 
@@ -47,9 +46,16 @@ public class Jd_nfyeve extends SPIIoTConnectorAdapter implements Program, DataDo
 
 	private String notifyEvent(final String xml) {
 		String responseAsString = "";
-		DocumentCreator reader = new DocumentCreator(xml);
+		DocumentCreator reader = new DocumentCreator(xml.trim());
 		reader.addDataDocumentEventListener(this);
 		reader.start();
+		
+		//TODO remove sleep...
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 
 		return responseAsString;
 	}
@@ -83,7 +89,7 @@ public class Jd_nfyeve extends SPIIoTConnectorAdapter implements Program, DataDo
 				break;
 			case "A37TAGS":
 				final String a37tags = entry.getValue().asString().getValue();
-				eventComponent = extractTags(a37tags);
+				extractTags(a37tags);
 				arrayListResponse.add(entry.getValue());
 				break;
 			}
@@ -91,42 +97,60 @@ public class Jd_nfyeve extends SPIIoTConnectorAdapter implements Program, DataDo
 		return arrayListResponse;
 	}
 
-	private EventComponent extractTags(final String a37tags) {
+	private Map<String, EventComponent> extractTags(final String a37tags) {
 
 		setA37SubId(a37tags.split("@")[0]);
-		final String[] rows = a37tags.split("|");
+		final String[] rows = a37tags.split("@")[1].split("\\|");
 
 		for (String row : rows) {
 			// name
-			String name = row.split("{")[0];
+			String name = row.split("\\{")[0];
 
 			// attributes of name var
-			String nameAttributes = row.split("{")[1];
+			String nameAttributes = row.split("\\{")[1];
 
 			// assume 6 attributes
-			String tpDato_keyValue = nameAttributes.split("]")[0];
-			String tpDato_key = tpDato_keyValue.split("[")[0];
-			String tpDato_value = tpDato_keyValue.split("[")[1];
+			String txt_keyValue = nameAttributes.split("\\]")[0];
+			String txt_key = txt_keyValue.split("\\[")[0];
+			String txt_value = "";
+			if (txt_keyValue.split("\\[").length > 1) {
+				txt_value = txt_keyValue.split("\\[")[1];
+			}
+			
+			String tpDato_keyValue = nameAttributes.split("\\]")[1];
+			String tpDato_key = tpDato_keyValue.split("\\[")[0];
+			String tpDato_value = "";
+			if (tpDato_keyValue.split("\\[").length > 1) {
+				tpDato_value = tpDato_keyValue.split("\\[")[1];
+			}
+			
+			String tpVar_keyValue = nameAttributes.split("\\]")[2];
+			String tpVar_key = tpVar_keyValue.split("\\[")[0];
+			String tpVar_value = "";
+			if (tpVar_keyValue.split("\\[").length > 1) {
+				tpVar_value = tpVar_keyValue.split("\\[")[1];
+			}
 
-			String dftVal_keyValue = nameAttributes.split("]")[1];
-			String dftVal_key = dftVal_keyValue.split("[")[0];
-			String dftVal_value = dftVal_keyValue.split("[")[1];
+			String dftVal_keyValue = nameAttributes.split("\\]")[3];
+			String dftVal_key = dftVal_keyValue.split("\\[")[0];
+			String dftVal_value = "";
+			if (dftVal_keyValue.split("\\[").length > 1) {
+				dftVal_value = dftVal_keyValue.split("\\[")[1];
+			}
 
-			String txt_keyValue = nameAttributes.split("]")[2];
-			String txt_key = txt_keyValue.split("[")[0];
-			String txt_value = txt_keyValue.split("[")[1];
+			String howRead_keyValue = nameAttributes.split("\\]")[4];
+			String howRead_key = howRead_keyValue.split("\\[")[0];
+			String howRead_value = "";
+			if (howRead_keyValue.split("\\[").length > 1) {
+				howRead_value = howRead_keyValue.split("\\[")[1];
+			}
 
-			String tpVar_keyValue = nameAttributes.split("]")[3];
-			String tpVar_key = tpVar_keyValue.split("[")[0];
-			String tpVar_value = tpVar_keyValue.split("[")[1];
-
-			String howRead_keyValue = nameAttributes.split("]")[4];
-			String howRead_key = howRead_keyValue.split("[")[0];
-			String howRead_value = howRead_keyValue.split("[")[1];
-
-			String iO_keyValue = nameAttributes.split("]")[5];
-			String iO_key = iO_keyValue.split("[")[0];
-			String iO_value = iO_keyValue.split("[")[1];
+			String iO_keyValue = nameAttributes.split("\\]")[5];
+			String iO_key = iO_keyValue.split("\\[")[0];
+			String iO_value = "";
+			if (iO_keyValue.split("\\[").length > 1) {
+				iO_value = iO_keyValue.split("\\[")[1];
+			}
 
 			EventComponent eventComponent = new EventComponent(a37SubId);
 			eventComponent.setIEventName(name);
@@ -140,7 +164,7 @@ public class Jd_nfyeve extends SPIIoTConnectorAdapter implements Program, DataDo
 			this.eventList.put(name, eventComponent);
 		}
 
-		return eventComponent;
+		return this.eventList;
 	}
 
 	@Override
