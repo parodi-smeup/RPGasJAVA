@@ -14,12 +14,12 @@ import com.smeup.rpgparser.interpreter.StringValue;
 import com.smeup.rpgparser.interpreter.Value;
 import com.smeup.rpgparser.jvminterop.JavaSystemInterface;
 
-public class Jd_url_test {
+public class JD_URL_TEST {
 
 	private ByteArrayOutputStream byteArrayOutputStream;
 	private PrintStream printStream;
 	private JavaSystemInterface javaSystemInterface;
-	private Jd_url JdProgram;
+	private JD_URL JdProgram;
 	private LinkedHashMap<String, Value> JdProgramRequestParms;
 	private List<Value> JdProgramResponseParms;
 
@@ -64,7 +64,7 @@ public class Jd_url_test {
 		byteArrayOutputStream = new ByteArrayOutputStream();
 		printStream = new PrintStream(byteArrayOutputStream);
 		javaSystemInterface = new JavaSystemInterface(printStream);
-		JdProgram = new Jd_url();
+		JdProgram = new JD_URL();
 		JdProgramRequestParms = new LinkedHashMap<String, Value>();
 	}
 

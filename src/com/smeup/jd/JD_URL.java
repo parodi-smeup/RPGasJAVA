@@ -19,11 +19,11 @@ import com.smeup.rpgparser.interpreter.StringValue;
 import com.smeup.rpgparser.interpreter.SystemInterface;
 import com.smeup.rpgparser.interpreter.Value;
 
-public class Jd_url implements Program {
+public class JD_URL implements Program {
 
 	private List<ProgramParam> parms;
 
-	public Jd_url() {
+	public JD_URL() {
 		parms = new ArrayList<ProgramParam>();
 		parms.add(new ProgramParam("U$FUNZ", new StringType(10)));
 		parms.add(new ProgramParam("U$METO", new StringType(10)));

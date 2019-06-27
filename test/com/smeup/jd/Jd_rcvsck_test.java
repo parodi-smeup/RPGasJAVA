@@ -30,7 +30,7 @@ public class Jd_rcvsck_test {
 	private ByteArrayOutputStream byteArrayOutputStream;
 	private PrintStream printStream;
 	private JavaSystemInterface javaSystemInterface;
-	private Jd_rcvsck JdProgram;
+	private JD_RCVSCK JdProgram;
 	private LinkedHashMap<String, Value> jdProgramRequestParms;
 	private List<Value> jdProgramResponseParms;
 	private String dataToSocket = "SOME DATA ON SOCKET";
@@ -45,7 +45,7 @@ public class Jd_rcvsck_test {
 				byteArrayOutputStream = new ByteArrayOutputStream();
 				printStream = new PrintStream(byteArrayOutputStream);
 				javaSystemInterface = new JavaSystemInterface(printStream);
-				JdProgram = new Jd_rcvsck();
+				JdProgram = new JD_RCVSCK();
 
 				jdProgramRequestParms = new LinkedHashMap<>();
 				
