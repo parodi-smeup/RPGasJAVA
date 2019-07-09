@@ -29,11 +29,6 @@
 			<version>master-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>com.github.smeup.smeup-rpg</groupId>
-			<artifactId>examples</artifactId>
-			<version>master-SNAPSHOT</version>
-		</dependency>
-		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.13-beta-3</version>
